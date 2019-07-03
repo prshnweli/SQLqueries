@@ -1,0 +1,12 @@
+USE Aeries2018
+
+SELECT
+STU.ID,
+STU.FN, 
+STU.LN,
+ISNULL((SELECT max(CDT) AS logi FROM PWA WHERE (DEL = 0) AND (PWA.PID = STU.ID) AND (PWA.TY = 'P')),NULL) AS "Last Accessed" 
+FROM STU
+WHERE stu.sc = 30
+AND STU.DEL = 0
+AND STU.TG = ''
+
