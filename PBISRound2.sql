@@ -1,5 +1,5 @@
 SELECT
-ID = STU.ID,
+"Student ID" = STU.ID,
 "First Name" = STU.FN,
 "Last Name" = STU.LN,
 Grade = STU.GR,
@@ -14,7 +14,7 @@ MAP_LexileScore_Winter19 = ISNULL ((SELECT TOP (1) OT AS score FROM TST WHERE (D
 MAP_ELAScore_Winter19 = ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) AND (TA IN ('1812','1901','1902','1903')) ORDER BY TD DESC ),''),
 MAP_MathScore_Winter19 = ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 20) AND (TA IN ('1812','1901','1902','1903')) ORDER BY TD DESC ),''),
 "Days Suspended" = ISNULL ((SELECT TOP (1) SU AS score FROM AHS WHERE (YR >= '2010-2011') AND (YR <= '2018-2019') AND (AHS.ID = stu.ID) ORDER BY SU DESC ),''),
-Expelled = CASE WHEN (SELECT EXD FROM EXP WHERE (STU.ID = EXP.PID)) != '' THEN 'Y' ELSE '' END,
+Expelled = CASE WHEN (SELECT TOP (1) EXD FROM EXP WHERE (STU.ID = EXP.PID) ORDER BY EXD DESC) != '' THEN 'Y' ELSE '' END,
 [Race] = (CASE
 	WHEN STU.ETH = 'Y' AND STU.RC1 > 100 THEN 'Hispanic'
 	WHEN STU.RC1 = 100 THEN 'American Indian or Alaskan Native'
@@ -42,7 +42,7 @@ Speaking_Perf =  ISNULL ((SELECT TOP (1) cast( PL as int) AS score FROM TST WHER
 Reading_Perf =  ISNULL ((SELECT TOP (1) cast( PL as int) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 5) ORDER BY TD DESC ),''),
 Writing_Perf =  ISNULL ((SELECT TOP (1) cast( PL as int) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 6) ORDER BY TD DESC ),''),
 GPA = STU.TP,
-Retained = CASE WHEN (SELECT CD FROM RET WHERE (RET.PID = STU.ID)) = 'R' THEN 'Y' ELSE '' END
+Retained = CASE WHEN (SELECT CD FROM RET WHERE (RET.PID = STU.ID) AND (RET.CD = 'R')) = 'R' THEN 'Y' ELSE '' END
 FROM STU
 WHERE STU.DEL = 0
 AND STU.TG = ''
