@@ -1,0 +1,15 @@
+USE Aeries
+
+SELECT 
+TCH.TF, 
+TCH.TLN, 
+TCH.EM,
+'' AS Password,
+(SELECT LOC.NM from LOC where TCH.SC = LOC.CD) AS School
+FROM TCH
+WHERE TCH.SC IN (2,6,8,9,10,11,12,15,20,21)
+AND TCH.DEL = 0
+AND TCH.TG = ''
+AND TCH.HI > 0
+AND TCH.EM != ''
+ORDER BY SC
