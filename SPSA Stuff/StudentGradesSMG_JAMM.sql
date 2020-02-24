@@ -1,6 +1,8 @@
 USE Aeries
 
 SELECT
+STU.ID AS 'Student ID',
+STU.LN + ', ' + STU.FN AS 'Student Name',
 GBU.GR AS 'Student Grade',
 GBU.GN AS 'Gradebook #',
 GBU.CSC AS 'Overall Score',
@@ -32,9 +34,7 @@ GBK.NM AS 'Class Name',
 GBK.TM as 'Term'
 FROM GBK
 JOIN GBU ON (GBK.GN = GBU.GN)
-WHERE
-GBU.GR = 8 
-AND GBU.DEL = 0
-AND GBU.CMK NOT IN ('N', '')
-AND GBU.SC = 10
-AND GBK.TM != '3'
+JOIN STU ON (GBU.SC = STU.SC) AND (GBU.SN = STU.SN)
+WHERE GBU.SC = 15
+AND STU.ID = 106922
+AND GBK.D2 < '11/08/2019'

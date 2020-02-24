@@ -1,7 +1,5 @@
-USE Aeries
-
 SELECT
-(select TE from TCH where GBK.TN = TCH.TN and GBK.SC = tch.sc and tch.del = 0 AND TCH.TG = '') AS Teacher,
+TCH.TE AS Teacher,
 School = ( select LOC.NM from LOC where GBK.SC = LOC.CD),
 GBA.AD,
 Complete = (CASE GBA.GC WHEN 0 THEN 'False' ELSE 'True' END),
@@ -10,8 +8,12 @@ GBK.HI,
 GBK.LO
 FROM GBK
 JOIN GBA ON (GBK.GN = GBA.GN)
-WHERE GBA.AN = 900
-AND GBK.SC IN (2,6,8,9,10,11,12,15)
+JOIN TCH ON (GBK.TN = TCH.TN) AND (GBK.SC = TCH.SC)
+WHERE GBA.AN = 902
+
 AND GBK.HI > -1
 AND GBK.LO < 6
-ORDER BY School, Complete
+AND TCH.DEL = 0
+AND TCH.TG = ''
+--AND GBK.SC = 10
+ORDER BY School, Complete desc

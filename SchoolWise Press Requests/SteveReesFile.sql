@@ -57,5 +57,5 @@ PSAT89_TOTAL = ISNULL ((SELECT TOP (1) TTL AS score FROM CTS WHERE (DEL = 0) AND
 FROM STU
 where stu.del = 0
 and stu.tg = ''
-and stu.sc in (2,6,8,9,10,11,12,15,20,21,30,31,32,40,60,70)
+and stu.sc in (2,6,8,9,10,11,12,15,20,21,30,31,32)
 order by school,grade,teacher
