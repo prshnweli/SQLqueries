@@ -1,5 +1,10 @@
 SELECT
 STU.ID AS 'ID',
+[Tag] = CASE STU.TG
+	WHEN 'I' THEN 'Inactive'
+	WHEN 'N' THEN 'No Show'
+	ELSE ''
+END,
 STU.SX AS 'Gender',
 School = ( select LOC.NM from LOC where stu.SC = LOC.CD),
 STU.SC,
@@ -16,7 +21,7 @@ STU.HSG AS 'Comp Status',
 	WHEN 360 THEN 'Completed grade 12 w/o completing grad reqs, not grad'
 	WHEN 480 THEN 'Promoted (matriculated)'
 END,
-STU.DG AS 'Comp Date',
+CONVERT(DATE,STU.DG) AS 'Comp Date',
 STU.GRT AS 'Graduation Track',
 [Graduation Track] = CASE STU.GRT
 	WHEN 'B' THEN 'Traditional Pathway'
@@ -56,6 +61,14 @@ CONVERT(DATE, STU.LD) AS 'Leave Date',
 	WHEN 460 THEN 'Home School - non-affiliated'
 	WHEN 470 THEN 'Pre-Enrolled, but never attended'
 END,
+[ParentEdLvl] = CASE STU.PED
+	WHEN 10 THEN 'Grad School/post grad trng'
+	WHEN 11 THEN 'College Graduate'
+	WHEN 12 THEN 'Some College'
+	WHEN 13 THEN 'High School Graduate'
+	WHEN 14 THEN 'Not HS Graduate'
+	WHEN 15 THEN 'Declined to State/Unkown'
+END,
 STU.ETH AS 'Ethnicity',
 [Race] = (CASE
 	WHEN STU.ETH = 'Y' AND STU.RC1 > 100 THEN 'Hispanic'
@@ -77,7 +90,28 @@ LowSocioEcoStatus =  case when stu.id in (select fre.id from fre where fre.id = 
   WHEN 'N' THEN 'Needs Testing'
 END,
 STU.U2 AS 'SPED',
-STU.U4 AS 'Migrant'
+STU.U4 AS 'Migrant',
+'Total GPA' = STU.TP,
+'Credits Complete 18_19' = (SELECT SUM(CC) FROM HIS WHERE STU.ID = HIS.PID AND HIS.YR = 18),
+'Credits Complete 17_18' = (SELECT SUM(CC) FROM HIS WHERE STU.ID = HIS.PID AND HIS.YR = 17),
+'Credits Complete 16_17' = (SELECT SUM(CC) FROM HIS WHERE STU.ID = HIS.PID AND HIS.YR = 16),
+'Credits Complete 15_16' = (SELECT SUM(CC) FROM HIS WHERE STU.ID = HIS.PID AND HIS.YR = 15),
+'CAASPP_ELAScore' =  ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'SBAC') AND (PT = 1) ORDER BY TD DESC ),''),
+'CAASPP_ELAProfLvl' =  ISNULL ((SELECT TOP (1) cast( PL as int) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'SBAC') AND (PT = 1) ORDER BY TD DESC ),''),
+'CAASPP_MathScore' =  ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'SBAC') AND (PT = 2) ORDER BY TD DESC ),''),
+'CAASPP_MathProfLvl' =  ISNULL ((SELECT TOP (1) cast( PL as int) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'SBAC') AND (PT = 2) ORDER BY TD DESC ),''),
+Attendance1819 = CAST(
+	((SELECT CAST(SUM(AHS.PR) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2018-2019'))/((SELECT CAST(SUM(AHS.EN) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2018-2019'))
+AS DECIMAL(10,2)),
+Attendance1718 = CAST(
+	((SELECT CAST(SUM(AHS.PR) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2017-2018'))/((SELECT CAST(SUM(AHS.EN) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2017-2018'))
+AS DECIMAL(10,2)),
+Attendance1617 = CAST(
+	((SELECT CAST(SUM(AHS.PR) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2016-2017'))/((SELECT CAST(SUM(AHS.EN) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2016-2017'))
+AS DECIMAL(10,2)),
+Attendance1516 = CAST(
+	((SELECT CAST(SUM(AHS.PR) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2015-2016'))/((SELECT CAST(SUM(AHS.EN) AS FLOAT) FROM AHS WHERE (AHS.ID = STU.ID) AND AHS.YR = '2015-2016'))
+AS DECIMAL(10,2))
 FROM STU
 WHERE STU.DEL = 0
 --AND STU.TG = ''
