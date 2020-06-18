@@ -1,0 +1,13 @@
+SELECT
+STU.ID AS 'ID',
+STU.LN + ', ' + STU.FN AS 'Name',
+STU.GR AS 'Grade',
+STU.LF AS 'LangFlu',
+SS_ELPAC =  ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 0) ORDER BY TD DESC ),''),
+Perf_ELPAC =  ISNULL ((SELECT TOP (1) cast( PL as int) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 0) ORDER BY TD DESC ),'')
+FROM STU
+WHERE STU.DEL = 0
+AND STU.TG = '*'
+AND STU.GR = 8
+AND STU.SC = 32
+AND STU.LF IN('L')

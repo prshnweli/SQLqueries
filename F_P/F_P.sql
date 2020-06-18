@@ -15,5 +15,5 @@ AND GBK.HI > -1
 AND GBK.LO < 6
 AND TCH.DEL = 0
 AND TCH.TG = ''
---AND GBK.SC = 10
+--AND GBK.SC = 6
 ORDER BY School, Complete desc
