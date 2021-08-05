@@ -1,0 +1,16 @@
+SELECT
+STU.ID AS 'StudentID',
+STU.TG AS 'Tag',
+STU.GR AS 'Grade',
+ENR.YR AS 'Year',
+School = ( select LOC.NM from LOC where ENR.SC = LOC.CD),
+ENR.ED AS 'EnterDate',
+ENR.LD AS 'LeaveDate',
+ENR.ER AS 'Exit Reason'
+FROM STU
+JOIN ENR ON STU.ID = ENR.ID
+WHERE STU.DEL = 0
+AND ENR.YR = '2020'
+AND ENR.SC IN (2,6,8,9,10,11,12,15,20,21,30,31,32)
+AND STU.TG != '*'
+ORDER BY STU.GR, STU.ID, ENR.ED

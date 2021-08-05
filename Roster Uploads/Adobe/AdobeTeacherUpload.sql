@@ -8,7 +8,7 @@ TCH.EM AS Email,
 TCH.TF AS 'First Name',
 TCH.TLN AS 'Last Name',
 'US' AS 'Country Code',
-'Default Spark with Premium Features for K-12 - 2 GB configuration' AS 'Product Configurations',
+'Default Adobe Spark for K-12 - 2 GB configuration' AS 'Product Configurations',
 [User Groups] =
 (CASE TCH.SC
 WHEN 2 THEN 'El Toro Teachers'

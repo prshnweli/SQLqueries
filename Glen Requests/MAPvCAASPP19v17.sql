@@ -38,15 +38,7 @@ END),
 DistrictEntry = CONVERT(DATE, STU.DD),
 Grade = stu.gr,
 SocioEcoStatus =  case when stu.id in (select fre.id from fre where fre.id = stu.id and fre.cd in ( 'f', 'r' ) and  (fre.esd > '7/1/2019' and fre.eed = '6/30/2020' ) and fre.del = 0 and ( stu.ped = 14 or fre.cd is not null )) then 'Y' else 'N' end,
-[Race] = (CASE
-	WHEN STU.ETH = 'Y' AND STU.RC1 > 100 THEN 'Hispanic'
-	WHEN STU.RC1 = 100 THEN 'American Indian or Alaskan Native'
-	WHEN STU.RC1 > 200 AND STU.RC1 < 300 THEN 'Asian'
-	WHEN STU.RC1 > 300 AND STU.RC1 < 401 THEN 'Pacific Islander'
-	WHEN STU.RC1 = 600 THEN 'Black or African American'
-	WHEN STU.RC1 = 700 THEN 'White'
-	ELSE 'Unknown'
-END),
+Race = (select rtrim(DE) from COD where COD.CD = stu.ec and cod.del = 0 and cod.tc = 'stu' and cod.fc = 'ec'),
 Ethnicity = STU.ETH,
 LangFluency = stu.lf,
 SPED = stu.U2,

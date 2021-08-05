@@ -1,0 +1,4 @@
+Server=''
+Database=''
+UID=''
+PWD=''

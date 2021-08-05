@@ -1,0 +1,55 @@
+SELECT
+SUM(mst.ts) AS 'TOTAL',
+MST.SC,
+Teacher = (select TE from TCH where MST.SC = TCH.SC and MST.TN = TCH.TN and tch.del = 0 ),
+CRS.C3 AS 'CALPADS'
+FROM MST
+JOIN CRS ON (CRS.CN = MST.CN)
+WHERE MST.SC in (30) AND MST.SM != 'F'
+AND CRS.C3 IN (
+8131,
+7130,
+7131,
+7237,
+7217,
+7238,
+7218,
+7310,
+8020,
+7172,
+7111,
+7121,
+7112,
+8021,
+7248,
+7810,
+7311,
+7312,
+7211,
+7122,
+9063,
+7171,
+7220,
+7247,
+8132,
+7132)
+GROUP BY CRS.C3, MST.TN, MST.SC
+
+
+-------------------------------
+
+SELECT
+SUM(mst.ts) AS 'TOTAL',
+MST.SC,
+Teacher = (select TE from TCH where MST.SC = TCH.SC and MST.TN = TCH.TN and tch.del = 0 ),
+CRS.C3 AS 'CALPADS',
+CRS.CO,
+MST.CN
+FROM MST
+JOIN CRS ON (CRS.CN = MST.CN)
+WHERE CRS.C3 IN (
+7247,
+7130,
+7131)
+AND MST.SC = 30
+GROUP BY CRS.C3, MST.TN, MST.SC, CRS.CO, MST.CN

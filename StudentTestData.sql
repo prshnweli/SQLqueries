@@ -54,16 +54,16 @@ SELECT 	StudentID = stu.id
 	   ,School = ( select LOC.NM from LOC where stu.SC = LOC.CD)
 	   ,Grade = stu.gr
 	   ,Teacher = (select TE from TCH where stu.CU = TCH.TN and stu.sc = tch.sc and tch.del = 0 )
-	   ,SocioEcoStatus =  case when stu.id in (select fre.id from fre where fre.id = stu.id and fre.cd in ( 'f', 'r' ) and  (fre.esd > '7/1/2017' and fre.eed = '6/30/2018' ) and fre.del = 0 and ( stu.ped = 14 or fre.cd is not null )) then 'Y' else 'N' end
+	   ,SocioEcoStatus =  case when stu.id in (select fre.id from fre where fre.id = stu.id and fre.cd in ( 'f', 'r' ) and  (fre.esd > '7/1/2020' and fre.eed = '6/30/2021' ) and fre.del = 0 and ( stu.ped = 14 or fre.cd is not null )) then 'Y' else 'N' end
 	   ,LangFluency = stu.lf
 	   ,SPED = stu.U2
 	   ,Migrant = stu.U4
 	   ,MAP_ELAScore = ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD DESC ),'')
-	   ,MAP_ELAPriorScore = ISNULL ((SELECT TOP (1) SS FROM (select top(2) ss,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD desc ) as score  ORDER BY TD asc ),'')    
+	   ,MAP_ELAPriorScore = ISNULL ((SELECT TOP (1) SS FROM (select top(2) ss,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD desc ) as score  ORDER BY TD asc ),'')
 	   ,MAP_ELAPercentile = ISNULL ((SELECT TOP (1) PC AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD DESC ),'')
-	   ,MAP_ELAPriorPercentile = ISNULL ((SELECT TOP (1) PC FROM (select top(2) PC,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD desc ) as score  ORDER BY TD asc ),'')        
+	   ,MAP_ELAPriorPercentile = ISNULL ((SELECT TOP (1) PC FROM (select top(2) PC,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD desc ) as score  ORDER BY TD asc ),'')
 	   ,MAP_LexileScore = ISNULL ((SELECT TOP (1) OT AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD DESC ),'')
-	   ,MAP_LexilePriorScore = ISNULL ((SELECT TOP (1) OT FROM (select top(2) ot,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD desc ) as score  ORDER BY TD asc ),'') 
+	   ,MAP_LexilePriorScore = ISNULL ((SELECT TOP (1) OT FROM (select top(2) ot,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 1) ORDER BY TD desc ) as score  ORDER BY TD asc ),'')
 	   ,MAP_MathScore = ISNULL ((SELECT TOP (1) SS AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 20) ORDER BY TD DESC ),'')
 	   ,MAP_MathPriorScore = ISNULL ((SELECT TOP (1) SS FROM (select top(2) ss,td from TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 20) ORDER BY TD desc ) as score  ORDER BY TD asc ),'')
 	   ,MAP_MathPercentile = ISNULL ((SELECT TOP (1) PC AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'MAP') AND (PT = 20) ORDER BY TD DESC ),'')

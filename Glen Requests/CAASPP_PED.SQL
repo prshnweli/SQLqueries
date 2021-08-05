@@ -2,16 +2,8 @@ SELECT
 ID = STU.ID,
 Name = STU.LN + ', ' + STU.FN,
 Grade = STU.GR,
-[Race] = (CASE
-	WHEN STU.ETH = 'Y' AND STU.RC1 > 100 THEN 'Hispanic'
-	WHEN STU.RC1 = 100 THEN 'American Indian or Alaskan Native'
-	WHEN STU.RC1 > 200 AND STU.RC1 < 300 THEN 'Asian'
-	WHEN STU.RC1 > 300 AND STU.RC1 < 401 THEN 'Pacific Islander'
-	WHEN STU.RC1 = 600 THEN 'Black or African American'
-	WHEN STU.RC1 = 700 THEN 'White'
-	ELSE 'Unknown'
-END),
-Ethnicity = STU.ETH,
+Race = (select rtrim(DE) from COD where COD.CD = stu.ec and cod.del = 0 and cod.tc = 'stu' and cod.fc = 'ec'),
+[Hispanic/Latinx] = STU.ETH,
 [Parent Education Level] = CASE STU.PED
 	WHEN 10 THEN 'Grad School/post grad trng'
 	WHEN 11 THEN 'College Graduate'

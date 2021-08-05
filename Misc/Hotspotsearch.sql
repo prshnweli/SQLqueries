@@ -1,0 +1,8 @@
+SELECT
+STU.ID AS 'STUID',
+STU.LN + ', ' + STU.FN AS 'Name',
+School = (select LOC.NM from LOC where stu.SC = LOC.CD),
+SUP.DV1
+FROM STU
+JOIN SUP ON SUP.SC = STU.SC AND SUP.SN = STU.SN
+WHERE SUP.DV1

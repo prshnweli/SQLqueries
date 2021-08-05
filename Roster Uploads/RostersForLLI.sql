@@ -21,15 +21,7 @@ ELPAC_Listening_Perf =  NULLIF(ISNULL ((SELECT TOP (1) cast( PL AS INT) AS score
 ELPAC_Speaking_Perf =  NULLIF(ISNULL ((SELECT TOP (1) cast( PL AS INT) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 4) ORDER BY TD DESC ),''), 0),
 ELPAC_Reading_Perf =  NULLIF(ISNULL ((SELECT TOP (1) cast( PL AS INT) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 5) ORDER BY TD DESC ),''), 0),
 ELPAC_Writing_Perf =  NULLIF(ISNULL ((SELECT TOP (1) cast( PL AS INT) AS score FROM TST WHERE (DEL = 0) AND (PID = stu.ID) AND (ID = 'ELPAC') AND (PT = 6) ORDER BY TD DESC ),''), 0),
-[Race] = (CASE
-	WHEN STU.ETH = 'Y' AND STU.RC1 > 100 THEN 'Hispanic'
-	WHEN STU.RC1 = 100 THEN 'American Indian or Alaskan Native'
-	WHEN STU.RC1 > 200 AND STU.RC1 < 300 THEN 'Asian'
-	WHEN STU.RC1 > 300 AND STU.RC1 < 401 THEN 'Pacific Islander'
-	WHEN STU.RC1 = 600 THEN 'Black or African American'
-	WHEN STU.RC1 = 700 THEN 'White'
-	ELSE 'Unknown'
-END),
+Race = (select rtrim(DE) from COD where COD.CD = stu.ec and cod.del = 0 and cod.tc = 'stu' and cod.fc = 'ec'),
 [ParentEdLvl] = CASE STU.PED
 	WHEN 10 THEN 'Grad School/post grad trng'
 	WHEN 11 THEN 'College Graduate'
